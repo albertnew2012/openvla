@@ -30,6 +30,14 @@ from libero.libero import benchmark
 
 import wandb
 
+# [study patch] Initialize torch's CUDA context BEFORE tensorflow is imported (libero_utils imports TF
+# at module load). On this stack (torch 2.2 + tensorflow-cpu 2.17 on py3.12), importing TF first and then
+# triggering torch's lazy CUDA init segfaults. Touching CUDA here first avoids the crash. See docs/04_REPRO_LOG.md.
+import torch as _torch  # noqa: E402
+
+if _torch.cuda.is_available():
+    _torch.zeros(1, device="cuda:0")
+
 # Append current directory so that interpreter can find experiments.robot
 sys.path.append("../..")
 from experiments.robot.libero.libero_utils import (

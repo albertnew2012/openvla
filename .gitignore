@@ -151,3 +151,12 @@ data/
 # Rollout videos and wandb logs
 rollouts/
 wandb/
+
+# === Albert's study package: ignore large/generated artifacts (keep docs/ + study_scripts/) ===
+.venv-openvla/
+runs/
+adapter-tmp/
+checkpoints/
+study_outputs/*.gif
+.venv-simpler/
+study_outputs
